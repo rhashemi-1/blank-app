@@ -280,6 +280,14 @@ if submit_button:
             # Display results
             if not results.empty:
                 st.success(f"Found {len(results)} matching authors")
+
+                # Add download button
+                csv = results.to_csv(index=False)
+                st.download_button(
+                    label="Download results as CSV",
+                    data=csv,
+                    file_name="author_results.csv",
+                    mime="text/csv"
                 
                 # Create expandable sections for each author
                 for idx, row in results.iterrows():
@@ -294,14 +302,6 @@ if submit_button:
                         st.write(f"**Insights:** {row['insights']}")
                         if row['profile_url']:
                             st.write(f"[View Semantic Scholar Profile]({row['profile_url']})")
-                
-                # Add download button
-                csv = results.to_csv(index=False)
-                st.download_button(
-                    label="Download results as CSV",
-                    data=csv,
-                    file_name="author_results.csv",
-                    mime="text/csv"
                 )
             else:
                 st.warning("No results found matching your criteria.")
