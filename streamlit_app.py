@@ -290,8 +290,7 @@ if submit_button:
                         arxiv_id = row['id'].split('/')[-1]  # Extract ID from the full URL
                         arxiv_link = f"https://arxiv.org/abs/{arxiv_id}"
                         
-                        st.write(f"**Paper Title:** {row['title']}")
-                        st.write(f"**arXiv Link:** [{arxiv_link}]({arxiv_link})")  # Added this line
+                        st.write(f"**Paper Title:** [{row['title']}]({arxiv_link})")
                         st.write(f"**Citations:** {row['citation_count']}")
                         st.write(f"**Total Papers:** {row['paper_count']}")
                         st.write(f"**Affiliations:** {row['affiliations']}")
