@@ -14,10 +14,11 @@ st.write("This app analyzes authors from recent ArXiv papers using Semantic Scho
 
 # Input forms
 with st.form("search_form"):
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([3,1])
     
     with col1:
-        category = st.text_input("ArXiv Category (e.g., cs.AI)", "cs.AI")
+        st.markdown("[ArXiv Category](https://arxiv.org/category_taxonomy) (e.g., cs.AI)")
+        category = st.text_input("", "cs.AI", help="Example: cs.AI for Artificial Intelligence, cs.LG for Machine Learning")
         start_date = st.date_input("Start Date")
         end_date = st.date_input("End Date")
         
