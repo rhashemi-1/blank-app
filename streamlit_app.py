@@ -129,7 +129,6 @@ with st.form("search_form"):
         ]
         
         category_selection = st.selectbox(
-            "",
             options=category_options,
         )
         
