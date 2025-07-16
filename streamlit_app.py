@@ -14,7 +14,7 @@ st.write("This app analyzes authors from recent ArXiv papers using Semantic Scho
 
 # Input forms
 with st.form("search_form"):
-    col1, col2 = st.columns([3,1])
+    col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("[ArXiv Category](https://arxiv.org/category_taxonomy) (e.g., cs.AI)")
