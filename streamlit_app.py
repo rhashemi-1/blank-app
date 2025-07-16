@@ -287,9 +287,9 @@ if submit_button:
                     # Add download button next to the success message
                     csv = results.to_csv(index=False)
                     st.download_button(
-                        label="Export to CSV",
+                        label="Download Results to CSV",
                         data=csv,
-                        file_name="author_results.csv",
+                        file_name="arxiv_sourcing_results.csv",
                         mime="text/csv"
                     )
                 
@@ -305,7 +305,7 @@ if submit_button:
                         st.write(f"**Affiliations:** {row['affiliations']}")
                         st.write(f"**Insights:** {row['insights']}")
                         if row['profile_url']:
-                            st.write(f"[View Semantic Scholar Profile]({row['profile_url']})")
+                            st.write(f"[View Potential Semantic Scholar Profile]({row['profile_url']})")
                 
             else:
                 st.warning("No results found matching your criteria.")
