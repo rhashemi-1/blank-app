@@ -285,7 +285,7 @@ if submit_button:
                     # Add download button next to the success message
                     csv = results.to_csv(index=False)
                     st.download_button(
-                        label="Download Results to CSV",
+                        label="Download results to a CSV file",
                         data=csv,
                         file_name="arxiv_sourcing_results.csv",
                         mime="text/csv"
