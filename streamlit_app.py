@@ -17,8 +17,31 @@ with st.form("search_form"):
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("[ArXiv Category](https://arxiv.org/category_taxonomy) (e.g., cs.AI)")
-        category = st.text_input("", "cs.AI", help="Example: cs.AI for Artificial Intelligence, cs.LG for Machine Learning")
+        st.markdown("[ArXiv Category](https://arxiv.org/category_taxonomy)")
+        # Predefined common categories
+        category_options = [
+            "cs.AI - Artificial Intelligence",
+            "cs.LG - Machine Learning",
+            "cs.CV - Computer Vision",
+            "cs.CL - Computation and Language",
+            "cs.RO - Robotics",
+            "cs.NE - Neural and Evolutionary Computing",
+            "stat.ML - Machine Learning (Statistics)",
+            "Other (Type Below)"
+        ]
+        category_selection = st.selectbox(
+            "",
+            options=category_options,
+            help="Select a category or choose 'Other' to type your own"
+        )
+        
+        # Show text input only if "Other" is selected
+        if category_selection == "Other (Type Below)":
+            category = st.text_input("Enter custom category", "", help="Example: cs.AI")
+        else:
+            # Extract category code from selection (everything before the dash)
+            category = category_selection.split(" - ")[0].strip()
+        
         start_date = st.date_input("Start Date")
         end_date = st.date_input("End Date")
         
