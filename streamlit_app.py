@@ -175,7 +175,6 @@ def get_author_info(author_name):
     except Exception as e:
         print(e)
         return None
-
     pass
 
 # Get results:
@@ -252,7 +251,6 @@ def get_results(category, start_date, end_date, num_results, author_limit, max_h
     result = sorted_df[['authors', 'id', 'title', 'paper_count', 'citation_count', 'h_index', 'insights', 'affiliations', 'profile_url']]
 
     return result
-
     pass
 
 # Handle form submission
@@ -305,7 +303,7 @@ if submit_button:
                         st.write(f"**Affiliations:** {row['affiliations']}")
                         st.write(f"**Insights:** {row['insights']}")
                         if row['profile_url']:
-                            st.write(f"[View Potential Semantic Scholar Profile]({row['profile_url']})")
+                            st.write(f"[View *Potential* Semantic Scholar Profile]({row['profile_url']})")
                 
             else:
                 st.warning("No results found matching your criteria.")
