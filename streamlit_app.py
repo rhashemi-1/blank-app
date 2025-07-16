@@ -143,7 +143,7 @@ def get_results(category, start_date, end_date, num_results, author_limit, max_h
 # Handle form submission
 def submit_button:
     try: 
-        with st.spinner('Fetching results..."):
+        with st.spinner("Fetching results..."):
             # Format dates
             start_date_str = start_date.strftime("%Y%m%d")
             end_date_str = end_date.strftime("%Y%m%d")
