@@ -26,22 +26,25 @@ with st.form("search_form"):
             "cs.CL - Computation and Language",
             "cs.RO - Robotics",
             "cs.NE - Neural and Evolutionary Computing",
+            "physics.app-ph - Applied Physics",
             "stat.ML - Machine Learning (Statistics)",
             "Other (Type Below)"
         ]
+        
         category_selection = st.selectbox(
             "",
             options=category_options,
             help="Select a category or choose 'Other' to type your own"
         )
         
-        # Show text input only if "Other" is selected
+        # Initialize category variable
         if category_selection == "Other (Type Below)":
-            category = st.text_input("Enter custom category", "", help="Example: cs.AI")
+            custom_category = st.text_input("Enter custom category", "", help="Example: cs.AI")
+            category = custom_category
         else:
             # Extract category code from selection (everything before the dash)
             category = category_selection.split(" - ")[0].strip()
-        
+            
         start_date = st.date_input("Start Date")
         end_date = st.date_input("End Date")
         
