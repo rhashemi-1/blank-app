@@ -261,14 +261,9 @@ def get_results(category, start_date, end_date, num_results, author_limit, max_h
 
 # Handle form submission
 if submit_button:
-    try: 
-        with st.spinner("Fetching results..."):
-            # Format dates
-            start_date_str = start_date.strftime("%Y%m%d")
-            end_date_str = end_date.strftime("%Y%m%d")
-            
-            # Process keywords
-            keyword_list = [k.strip() for k in keywords.split(',')] if keywords else []
+    try:
+        with st.spinner('Fetching results...'):
+            # Your existing code for processing dates and keywords...
             
             # Get results
             results = get_results(
@@ -288,13 +283,18 @@ if submit_button:
                 # Create expandable sections for each author
                 for idx, row in results.iterrows():
                     with st.expander(f"{row['authors']} (h-index: {row['h_index']})"):
+                        # Create arXiv link from the ID
+                        arxiv_id = row['id'].split('/')[-1]  # Extract ID from the full URL
+                        arxiv_link = f"https://arxiv.org/abs/{arxiv_id}"
+                        
                         st.write(f"**Paper Title:** {row['title']}")
+                        st.write(f"**arXiv Link:** [{arxiv_link}]({arxiv_link})")
                         st.write(f"**Citations:** {row['citation_count']}")
                         st.write(f"**Total Papers:** {row['paper_count']}")
                         st.write(f"**Affiliations:** {row['affiliations']}")
                         st.write(f"**Insights:** {row['insights']}")
                         if row['profile_url']:
-                            st.write(f"[View Semantic Scholar Profile]({row['profile_url']})")
+                            st.write(f"**Semantic Scholar Profile:** [{row['profile_url']}]({row['profile_url']})")
                 
                 # Add download button
                 csv = results.to_csv(index=False)
