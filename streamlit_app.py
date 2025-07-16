@@ -128,7 +128,7 @@ with st.form("search_form"):
             "stat.TH - Theory"
         ]
         
-        category_selection = st.selectbox(options=category_options)
+        category_selection = st.selectbox("", options=category_options)
         
         # Extract category code from selection (everything before the dash)
         category = category_selection.split(" - ")[0].strip()    
