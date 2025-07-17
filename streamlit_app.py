@@ -17,10 +17,8 @@ with st.form("search_form"):
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("""
-            [ArXiv Category](https://arxiv.org/category_taxonomy)
-            <div style='margin-top: -25px;'></div>
-            """, unsafe_allow_html=True)
+        st.markdown("[ArXiv Category](https://arxiv.org/category_taxonomy)")
+        st.markdown('<style>div[data-testid="stMarkdownContainer"] {margin-bottom: -25px;}</style>', unsafe_allow_html=True)
         # Complete list of ArXiv categories
         category_options = [
             # Computer Science
