@@ -17,8 +17,7 @@ with st.form("search_form"):
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("[ArXiv Category](https://arxiv.org/category_taxonomy)")
-        st.markdown('<style>div[data-testid="stMarkdownContainer"] {margin-bottom: -25px;}</style>', unsafe_allow_html=True)
+        
         # Complete list of ArXiv categories
         category_options = [
             # Computer Science
@@ -129,7 +128,7 @@ with st.form("search_form"):
             "stat.TH - Theory"
         ]
         
-        category_selection = st.selectbox("", options=category_options)
+        category_selection = st.selectbox("[ArXiv Category](https://arxiv.org/category_taxonomy)", options=category_options)
         
         # Extract category code from selection (everything before the dash)
         category = category_selection.split(" - ")[0].strip()    
