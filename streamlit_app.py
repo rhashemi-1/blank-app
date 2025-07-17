@@ -320,7 +320,7 @@ if submit_button:
                         <p><b>Affiliation:</b> {row['affiliations']}</p>
                         <p>{row['insights']}</p>""" + 
                         (f"""<div class="links">
-                        <p><a href='{row['profile_url']}'>View Semantic Scholar Profile</a></p>
+                        <p><a href='{row['profile_url']}'>View *Potential* Semantic Scholar Profile</a></p>
                         </div>""" if row['profile_url'] else "") +
                         """</div>
                         """, unsafe_allow_html=True)
