@@ -300,18 +300,30 @@ if submit_button:
                         background-color: #f0f2f6;
                         margin-bottom: 10px;
                     }
+                    .links {
+                        margin-top: 10px;
+                        padding-top: 10px;
+                        border-top: 1px solid #e0e0e0;
+                    }
                     </style>
                     """, unsafe_allow_html=True)
                 
                 for idx, row in results.iterrows():
                     with st.container():
+                        arxiv_id = row['id'].split('/')[-1]
+                        arxiv_link = f"https://arxiv.org/abs/{arxiv_id}"
                         st.markdown(f"""
                         <div class="author-card">
                         <h3>{row['authors']}</h3>
-                        <p><b>Paper:</b> <a href="https://arxiv.org/abs/{row['id'].split('/')[-1]}">{row['title']}</a></p>
+                        <p><b>Paper:</b> <a href="{arxiv_link}">{row['title']}</a></p>
                         <p><b>Citations:</b> {row['citation_count']} | <b>H-index:</b> {row['h_index']}</p>
                         <p><b>Affiliation:</b> {row['affiliations']}</p>
                         <p>{row['insights']}</p>
+                        <div class="links">
+                        <p><b>Links:</b> <a href="{arxiv_link}">ArXiv</a>""" + 
+                        (f" | <a href='{row['profile_url']}'>Semantic Scholar Profile</a>" if row['profile_url'] else "") +
+                        """</p>
+                        </div>
                         </div>
                         """, unsafe_allow_html=True)
                 
