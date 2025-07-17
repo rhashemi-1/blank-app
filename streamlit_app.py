@@ -16,10 +16,10 @@ with st.expander("How It Works"):
     st.markdown("""
     ##### Using the Tool:
     Configure Search Parameters:
-        - Select arXiv research category
-        - Set publication date range
-        - Adjust author metrics thresholds
-        - Add optional keywords to target specific research areas
+    - Select arXiv research category
+    - Set publication date range
+    - Adjust author metrics thresholds
+    - Add optional keywords to target specific research areas
     
     ##### Understanding Results:
     Each result card shows:
