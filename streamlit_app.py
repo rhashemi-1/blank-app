@@ -290,20 +290,53 @@ if submit_button:
                         file_name="arxiv_sourcing_results.csv",
                         mime="text/csv"
                     )
+
+                # New author results:
+                for idx, row in results.iterrows():
+                    st.markdown("---")
+                    st.subheader(row['authors'])
+                    
+                    # Metrics row
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.metric("Citations", row['citation_count'])
+                    with col2:
+                        st.metric("H-index", row['h_index'])
+                    with col3:
+                        st.metric("Papers", row['paper_count'])
+                    
+                    # Paper title as a clickable link to arXiv
+                    arxiv_id = row['id'].split('/')[-1]
+                    arxiv_link = f"https://arxiv.org/abs/{arxiv_id}"
+                    st.markdown(f"📄 **Paper:** [{row['title']}]({arxiv_link})")
+                    
+                    # Affiliation
+                    st.markdown(f"🏛️ **Affiliation:** {row['affiliations']}")
+                    
+                    # Links and insights in columns
+                    col1, col2 = st.columns([1,2])
+                    with col1:
+                        st.markdown("### Quick Links")
+                        if row['profile_url']:
+                            st.markdown(f"- [Semantic Scholar Profile]({row['profile_url']})")
+                        st.markdown(f"- [View on ArXiv]({arxiv_link})")
+                    with col2:
+                        st.markdown("### Research Impact")
+                        st.markdown(row['insights'])
                 
                 # Create expandable sections for each author
-                for idx, row in results.iterrows():
-                    with st.expander(f"{row['authors']} (h-index: {row['h_index']})"):
-                        arxiv_id = row['id'].split('/')[-1]  # Extract ID from the full URL
-                        arxiv_link = f"https://arxiv.org/abs/{arxiv_id}"
+                # for idx, row in results.iterrows():
+                #     with st.expander(f"{row['authors']} (h-index: {row['h_index']})"):
+                #         arxiv_id = row['id'].split('/')[-1]  # Extract ID from the full URL
+                #         arxiv_link = f"https://arxiv.org/abs/{arxiv_id}"
                         
-                        st.write(f"**Paper Title:** [{row['title']}]({arxiv_link})")
-                        st.write(f"**Citations:** {row['citation_count']}")
-                        st.write(f"**Total Papers:** {row['paper_count']}")
-                        st.write(f"**Affiliations:** {row['affiliations']}")
-                        st.write(f"**Insights:** {row['insights']}")
-                        if row['profile_url']:
-                            st.write(f"[View *Potential* Semantic Scholar Profile]({row['profile_url']})")
+                #         st.write(f"**Paper Title:** [{row['title']}]({arxiv_link})")
+                #         st.write(f"**Citations:** {row['citation_count']}")
+                #         st.write(f"**Total Papers:** {row['paper_count']}")
+                #         st.write(f"**Affiliations:** {row['affiliations']}")
+                #         st.write(f"**Insights:** {row['insights']}")
+                #         if row['profile_url']:
+                #             st.write(f"[View *Potential* Semantic Scholar Profile]({row['profile_url']})")
                 
             else:
                 st.warning("No results found matching your criteria.")
