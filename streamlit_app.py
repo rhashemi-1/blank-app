@@ -14,7 +14,7 @@ st.write("This app analyzes authors from recent ArXiv papers using Semantic Scho
 
 with st.expander("How It Works"):
     st.markdown("""
-    ### Using this Application:
+    #### Using this Application:
     1. **Select Category**: Choose an arXiv category from the dropdown menu
     2. **Set Date Range**: Select your desired date range for paper submissions
     3. **Adjust Parameters**:
@@ -24,7 +24,7 @@ with st.expander("How It Works"):
     4. **Add Keywords** (optional): Enter comma-separated keywords to filter papers
     5. **Search**: Click the search button to find potential collaborators
 
-    ### Results Explanation:
+    #### Results Explanation:
     - Each card shows an author and their recent arXiv submission
     - Citations and H-index are from Semantic Scholar
     - Click paper titles to view on arXiv
