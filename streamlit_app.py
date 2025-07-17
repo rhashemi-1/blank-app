@@ -12,7 +12,7 @@ import xml.etree.ElementTree as etree
 st.title("Scholar Search")
 st.write("Streamlining the discovery of emerging research talent by analyzing recent publications and their authors")
 
-with st.expander("How It Works"):
+with st.expander("<h2 style='font-size: 28px; margin-bottom: 0px'>How It Works</h2>", unsafe_allow_html=True):
     st.markdown("""
     ##### Using the Tool:
     Configure Search Parameters:
