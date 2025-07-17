@@ -10,25 +10,32 @@ import xml.etree.ElementTree as etree
 
 # Heading
 st.title("Scholar Search")
-st.write("This app analyzes authors from recent ArXiv papers using Semantic Scholar data")
+# st.write("This app analyzes authors from recent ArXiv papers using Semantic Scholar data")
 
 with st.expander("How It Works"):
     st.markdown("""
-    #### Using this Application:
-    1. **Select Category**: Choose an arXiv category from the dropdown menu
-    2. **Set Date Range**: Select your desired date range for paper submissions
-    3. **Adjust Parameters**:
-        - Number of Results: Maximum number of papers to analyze
-        - Author Limit per Paper: Maximum number of authors to consider per paper
-        - Maximum H-Index: Filter out authors above this h-index
-    4. **Add Keywords** (optional): Enter comma-separated keywords to filter papers
-    5. **Search**: Click the search button to find potential collaborators
-
-    #### Results Explanation:
-    - Each card shows an author and their recent arXiv submission
-    - Citations and H-index are from Semantic Scholar
-    - Click paper titles to view on arXiv
-    - When available, view author's full profile on Semantic Scholar
+    ### Purpose:
+    This application streamlines the discovery of emerging research talent by analyzing recent publications and author metrics.
+    
+    ### Using the Tool:
+    1. **Configure Search Parameters:**
+        - Select arXiv research category
+        - Set publication date range
+        - Adjust author metrics thresholds
+        - Add optional keywords to target specific research areas
+    
+    ### Understanding Results:
+    Each result card shows:
+    - Author name and their recent arXiv publication
+    - Academic metrics (citations, h-index) from Semantic Scholar
+    - Institutional affiliations when available
+    - Research impact insights
+    - Author profile links on Semantic Scholar (*Note: author profiles are not always accurate and should be manually verified before outreach*)
+    
+    ### Key Features:
+    - **Quality Filters:** Authors must have minimum 10 publications and 100 citations
+    - **Interactive Links:** Access full papers on arXiv via paper titles
+    - **Data Export:** Download results as CSV for systematic candidate tracking
     """)
 
 # Input forms
