@@ -10,7 +10,7 @@ import xml.etree.ElementTree as etree
 
 # Heading
 st.title("Scholar Search")
-st.write("Streamlining the discovery of emerging research talent through analyzing recent publications and author metrics")
+st.write("Streamlining the discovery of emerging research talent by analyzing recent publications and their authors")
 
 with st.expander("How It Works"):
     st.markdown("""
