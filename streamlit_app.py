@@ -10,21 +10,18 @@ import xml.etree.ElementTree as etree
 
 # Heading
 st.title("Scholar Search")
-# st.write("This app analyzes authors from recent ArXiv papers using Semantic Scholar data")
+# st.write("This app streamlines the discovery of emerging research talent by analyzing recent publications and author metrics")
 
 with st.expander("How It Works"):
     st.markdown("""
-    ### Purpose:
-    This application streamlines the discovery of emerging research talent by analyzing recent publications and author metrics.
-    
-    ### Using the Tool:
-    1. **Configure Search Parameters:**
+    ##### Using the Tool:
+    Configure Search Parameters:
         - Select arXiv research category
         - Set publication date range
         - Adjust author metrics thresholds
         - Add optional keywords to target specific research areas
     
-    ### Understanding Results:
+    ##### Understanding Results:
     Each result card shows:
     - Author name and their recent arXiv publication
     - Academic metrics (citations, h-index) from Semantic Scholar
@@ -32,8 +29,9 @@ with st.expander("How It Works"):
     - Research impact insights
     - Author profile links on Semantic Scholar (*Note: author profiles are not always accurate and should be manually verified before outreach*)
     
-    ### Key Features:
+    ##### Key Features:
     - **Quality Filters:** Authors must have minimum 10 publications and 100 citations
+    - **Intelligent Ranking:** Results are ordered by h-index (highest to lowest), with citation count as a secondary sort for ties
     - **Interactive Links:** Access full papers on arXiv via paper titles
     - **Data Export:** Download results as CSV for systematic candidate tracking
     """)
