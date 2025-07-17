@@ -23,7 +23,7 @@ with st.expander("How It Works"):
     
     ##### Understanding Results:
     Each result card shows:
-    - Author name and their recent arXiv publication
+    - Author name and their recent arXiv publication (full paper on arXiv is linked)
     - Academic metrics (citations, h-index) from Semantic Scholar
     - Institutional affiliations when available
     - Research impact insights
@@ -32,7 +32,6 @@ with st.expander("How It Works"):
     ##### Key Features:
     - **Quality Filters:** Authors must have minimum 10 publications and 100 citations
     - **Intelligent Ranking:** Results are ordered by h-index (highest to lowest), with citation count as a secondary sort for ties
-    - **Interactive Links:** Access full papers on arXiv via paper titles
     - **Data Export:** Download results as CSV for systematic candidate tracking
     """)
 
