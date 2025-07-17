@@ -9,7 +9,7 @@ import requests
 import xml.etree.ElementTree as etree
 
 # Heading
-st.title("Research Paper Sourcing Explorer")
+st.title("Scholar Search")
 st.write("This app analyzes authors from recent ArXiv papers using Semantic Scholar data")
 
 with st.expander("How It Works"):
