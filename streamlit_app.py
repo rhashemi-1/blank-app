@@ -318,15 +318,13 @@ if submit_button:
                         <p><b>Paper:</b> <a href="{arxiv_link}">{row['title']}</a></p>
                         <p><b>Citations:</b> {row['citation_count']} | <b>H-index:</b> {row['h_index']}</p>
                         <p><b>Affiliation:</b> {row['affiliations']}</p>
-                        <p>{row['insights']}</p>
-                        <div class="links">
-                        <p><b>Links:</b> <a href="{arxiv_link}">ArXiv</a>""" + 
-                        (f" | <a href='{row['profile_url']}'>Semantic Scholar Profile</a>" if row['profile_url'] else "") +
-                        """</p>
-                        </div>
-                        </div>
+                        <p>{row['insights']}</p>""" + 
+                        (f"""<div class="links">
+                        <p><a href='{row['profile_url']}'>View Semantic Scholar Profile</a></p>
+                        </div>""" if row['profile_url'] else "") +
+                        """</div>
                         """, unsafe_allow_html=True)
-                
+        
                 # Create expandable sections for each author
                 # for idx, row in results.iterrows():
                 #     with st.expander(f"{row['authors']} (h-index: {row['h_index']})"):
