@@ -292,37 +292,28 @@ if submit_button:
                     )
 
                 # New author results:
+                st.markdown("""
+                    <style>
+                    .author-card {
+                        padding: 20px;
+                        border-radius: 5px;
+                        background-color: #f0f2f6;
+                        margin-bottom: 10px;
+                    }
+                    </style>
+                    """, unsafe_allow_html=True)
+                
                 for idx, row in results.iterrows():
-                    st.markdown("---")
-                    st.subheader(row['authors'])
-                    
-                    # Metrics row
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric("Citations", row['citation_count'])
-                    with col2:
-                        st.metric("H-index", row['h_index'])
-                    with col3:
-                        st.metric("Papers", row['paper_count'])
-                    
-                    # Paper title as a clickable link to arXiv
-                    arxiv_id = row['id'].split('/')[-1]
-                    arxiv_link = f"https://arxiv.org/abs/{arxiv_id}"
-                    st.markdown(f"📄 **Paper:** [{row['title']}]({arxiv_link})")
-                    
-                    # Affiliation
-                    st.markdown(f"🏛️ **Affiliation:** {row['affiliations']}")
-                    
-                    # Links and insights in columns
-                    col1, col2 = st.columns([1,2])
-                    with col1:
-                        st.markdown("### Quick Links")
-                        if row['profile_url']:
-                            st.markdown(f"- [Semantic Scholar Profile]({row['profile_url']})")
-                        st.markdown(f"- [View on ArXiv]({arxiv_link})")
-                    with col2:
-                        st.markdown("### Research Impact")
-                        st.markdown(row['insights'])
+                    with st.container():
+                        st.markdown(f"""
+                        <div class="author-card">
+                        <h3>{row['authors']}</h3>
+                        <p><b>Paper:</b> <a href="https://arxiv.org/abs/{row['id'].split('/')[-1]}">{row['title']}</a></p>
+                        <p><b>Citations:</b> {row['citation_count']} | <b>H-index:</b> {row['h_index']}</p>
+                        <p><b>Affiliation:</b> {row['affiliations']}</p>
+                        <p>{row['insights']}</p>
+                        </div>
+                        """, unsafe_allow_html=True)
                 
                 # Create expandable sections for each author
                 # for idx, row in results.iterrows():
