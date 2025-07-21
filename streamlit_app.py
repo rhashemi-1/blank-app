@@ -325,16 +325,11 @@ if submit_button:
                 
                 for idx, row in results.iterrows():
                     with st.container():
-                        col1, col2 = st.columns([4, 1])
-                        with col1:
-                            st.subheader(row['authors'])
-                        with col2:
-                            st.text_input('Copy name:', value=row['authors'], key=f"author_{idx}")
-                        
                         arxiv_id = row['id'].split('/')[-1]
                         arxiv_link = f"https://arxiv.org/abs/{arxiv_id}"
                         st.markdown(f"""
                         <div class="author-card">
+                        <h3>{row['authors']}</h3>
                         <p><b>Paper:</b> <a href="{arxiv_link}">{row['title']}</a></p>
                         <p><b>Citations:</b> {row['citation_count']} | <b>H-index:</b> {row['h_index']}</p>
                         <p><b>Affiliation:</b> {row['affiliations']}</p>
@@ -343,8 +338,9 @@ if submit_button:
                         <p><a href='{row['profile_url']}'>View <i>Potential</i> Semantic Scholar Profile</a></p>
                         </div>""" if row['profile_url'] else "") +
                         """</div>
-                        """, unsafe_allow_html=True)
-        
+                        """, unsafe_allow_html=True)        
+
+                        
                 # Create expandable sections for each author
                 # for idx, row in results.iterrows():
                 #     with st.expander(f"{row['authors']} (h-index: {row['h_index']})"):
