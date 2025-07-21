@@ -7,24 +7,7 @@ import urllib
 import urllib.request
 import requests
 import xml.etree.ElementTree as etree
-
-st.markdown("""
-    <style>
-    .copy-button {
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        padding: 5px 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 12px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-    </style>
-""", unsafe_allow_html=True)
+import pyperclip  
 
 # Heading
 st.title("Scholar Search")
@@ -342,15 +325,18 @@ if submit_button:
                 
                 for idx, row in results.iterrows():
                     with st.container():
+                        col1, col2 = st.columns([4, 1])
+                        with col1:
+                            st.subheader(row['authors'])
+                        with col2:
+                            if st.button('📋 Copy Name', key=f"copy_{idx}"):
+                                pyperclip.copy(row['authors'])
+                                st.success('Name copied!')
+                        
                         arxiv_id = row['id'].split('/')[-1]
                         arxiv_link = f"https://arxiv.org/abs/{arxiv_id}"
                         st.markdown(f"""
                         <div class="author-card">
-                        <h3>{row['authors']}
-                        <button class="copy-button" onclick="navigator.clipboard.writeText('{row['authors']}')">
-                            Copy Name
-                        </button>
-                        </h3>
                         <p><b>Paper:</b> <a href="{arxiv_link}">{row['title']}</a></p>
                         <p><b>Citations:</b> {row['citation_count']} | <b>H-index:</b> {row['h_index']}</p>
                         <p><b>Affiliation:</b> {row['affiliations']}</p>
