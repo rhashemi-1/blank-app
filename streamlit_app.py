@@ -7,7 +7,7 @@ import urllib
 import urllib.request
 import requests
 import xml.etree.ElementTree as etree
-import pyperclip  
+# import pyperclip  
 
 # Heading
 st.title("Scholar Search")
@@ -329,9 +329,7 @@ if submit_button:
                         with col1:
                             st.subheader(row['authors'])
                         with col2:
-                            if st.button('📋 Copy Name', key=f"copy_{idx}"):
-                                pyperclip.copy(row['authors'])
-                                st.success('Name copied!')
+                            st.text_input('Copy name:', value=row['authors'], key=f"author_{idx}")
                         
                         arxiv_id = row['id'].split('/')[-1]
                         arxiv_link = f"https://arxiv.org/abs/{arxiv_id}"
