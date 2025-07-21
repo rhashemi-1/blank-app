@@ -8,6 +8,24 @@ import urllib.request
 import requests
 import xml.etree.ElementTree as etree
 
+st.markdown("""
+    <style>
+    .copy-button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Heading
 st.title("Scholar Search")
 st.write("Streamlining the discovery of emerging research talent by analyzing recent publications and their authors")
@@ -328,7 +346,11 @@ if submit_button:
                         arxiv_link = f"https://arxiv.org/abs/{arxiv_id}"
                         st.markdown(f"""
                         <div class="author-card">
-                        <h3>{row['authors']}</h3>
+                        <h3>{row['authors']}
+                        <button class="copy-button" onclick="navigator.clipboard.writeText('{row['authors']}')">
+                            Copy Name
+                        </button>
+                        </h3>
                         <p><b>Paper:</b> <a href="{arxiv_link}">{row['title']}</a></p>
                         <p><b>Citations:</b> {row['citation_count']} | <b>H-index:</b> {row['h_index']}</p>
                         <p><b>Affiliation:</b> {row['affiliations']}</p>
