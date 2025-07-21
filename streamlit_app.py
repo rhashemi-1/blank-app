@@ -85,29 +85,6 @@ with st.form("search_form"):
             "cs.SI - Social and Information Networks",
             "cs.SY - Systems and Control",
             
-            # Physics
-            "physics.acc-ph - Accelerator Physics",
-            "physics.app-ph - Applied Physics",
-            "physics.ao-ph - Atmospheric and Oceanic Physics",
-            "physics.atom-ph - Atomic Physics",
-            "physics.bio-ph - Biological Physics",
-            "physics.chem-ph - Chemical Physics",
-            "physics.class-ph - Classical Physics",
-            "physics.comp-ph - Computational Physics",
-            "physics.data-an - Data Analysis, Statistics and Probability",
-            "physics.flu-dyn - Fluid Dynamics",
-            "physics.gen-ph - General Physics",
-            "physics.geo-ph - Geophysics",
-            "physics.hist-ph - History and Philosophy of Physics",
-            "physics.ins-det - Instrumentation and Detectors",
-            "physics.med-ph - Medical Physics",
-            "physics.optics - Optics",
-            "physics.ed-ph - Physics Education",
-            "physics.soc-ph - Physics and Society",
-            "physics.plasm-ph - Plasma Physics",
-            "physics.pop-ph - Popular Physics",
-            "physics.space-ph - Space Physics",
-            
             # Mathematics
             "math.AG - Algebraic Geometry",
             "math.AT - Algebraic Topology",
@@ -174,23 +151,37 @@ def get_author_info(author_name):
     params = {
         'query': author_name, # Note that I am searching by author name instead of paper name because new papers on arXiv are not yet on semantic scholar (delayed entry)
         'fields': 'name,paperCount,citationCount,hIndex,affiliations,url',
+        'limit': 5
     }
     try:
-        time.sleep(1)
-        response = requests.get(base_url, params=params) #, headers=headers)
+        time.sleep(0.1)
+        response = requests.get(base_url, params=params)
         
         if response.status_code == 200:
             data = response.json()
             if data['data'] and len(data['data']) > 0:
-                # If there are multiple authors with the same name, choose the one with the most citations (the reason for this is that if there are multiple authors with the same name, let's find the best one and manually fix it if it's wrong. If we didn't find the best one, we may filter it out and miss a great candidate).
-                most_cited_author = max(data['data'], key=lambda x: x.get('citationCount', 0) or 0)
+                # If there are multiple authors with the same name, choose the one with papers in CS and then with the most citations)
+                cs_authors = []
+                for author in data['data']:
+                    if author.get('papers'):
+                        for paper in author['papers']:
+                            if paper.get('fieldsOfStudy') and 'Computer Science' in paper['fieldsOfStudy']:
+                                cs_authors.append(author)
+                                break
+                # If we found CS authors, return the one with highest citations
+                if cs_authors:
+                    best_author = max(cs_authors, key=lambda x: x.get('citationCount', 0) or 0)
+                else:
+                    # If no CS authors found, just take the highest cited author
+                    best_author = max(data['data'], key=lambda x: x.get('citationCount', 0) or 0)
+                
                 return {
-                    'name': most_cited_author.get('name'),
-                    'paper_count': most_cited_author.get('paperCount'),
-                    'citation_count': most_cited_author.get('citationCount'),
-                    'h_index': most_cited_author.get('hIndex'),
-                    'affiliation': most_cited_author.get('affiliations', []),
-                    'url': most_cited_author.get('url')
+                    'name': best_author.get('name'),
+                    'paper_count': best_author.get('paperCount'),
+                    'citation_count': best_author.get('citationCount'),
+                    'h_index': best_author.get('hIndex'),
+                    'affiliation': best_author.get('affiliations', []),
+                    'url': best_author.get('url')
                 }
         else:
             return None
