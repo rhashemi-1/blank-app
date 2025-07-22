@@ -106,7 +106,7 @@ with st.form("search_form"):
     with col2:
         num_results = st.number_input("Number of Papers Scanned (increases app runtime)", min_value=1, max_value=1000, value=100)
         author_limit = st.number_input("Author Limit per Paper", min_value=1, value=5)
-        max_h_index = st.number_input("Maximum H-Index", min_value=1, value=25)
+        max_h_index = st.number_input("Maximum Author H-Index", min_value=1, value=25)
     
     keywords = st.text_input("Optional: Keywords (use AND, OR operators, e.g., 'transformer AND attention' or 'GPT OR LLM')")
     keyword_list = [k.strip() for k in keywords.split(',')] if keywords else []
