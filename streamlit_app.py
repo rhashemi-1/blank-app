@@ -92,18 +92,9 @@ with st.form("search_form"):
             'stat.TH': 'Theory'
         }
 
-        # NEW CATEGORY IMPLEMENTATION (CHECKBOXES??)
-        cols = st.columns(3)
-        selected_cats = []
-
-        for idx, (cat_code, cat_name) in enumerate(category_options.items()):
-            col_idx = idx % 3
-            with cols[col_idx]:
-                if st.checkbox(f"{cat_code} ({cat_name})", key=cat_code):
-                    selected_cats.append(cat_code)
-        
-        if not selected_cats: 
-            st.warning("Please select at least one category") # Error if no categories are selected
+        selected_cats = st.multiselect("Select 1 or More [Research Categories](https://arxiv.org/category_taxonomy)", options=category_options.keys(), format_func=lambda x: f"{x} - "{category_options[x]}")
+        if not selected_cats:
+            st.warning("Please select at least one category")
         
         # category_selection = st.selectbox("[ArXiv Category](https://arxiv.org/category_taxonomy)", options=category_options)
         # # Extract category code from selection (everything before the dash)
