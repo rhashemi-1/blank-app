@@ -161,18 +161,8 @@ def get_author_info(author_name):
 
 # Get results:
 def get_results(categories, start_date, end_date, num_results, author_limit, max_h_index=25, keywords=[]):
-    cat_query = ' OR '.join([f"cat:{cat}" for cat in categories]) # NEW FOR CHECKBOX IMPLEMENTATION
-    # url = f"http://export.arxiv.org/api/query?search_query=cat:{cat_query}+AND+submittedDate:[{start_date}0000+TO+{end_date}2359]&start=0&max_results={num_results}&sortBy=submittedDate&sortOrder=descending"
-
-    base_url = 'http://export.arxiv.org/api/query'
-    params = {
-        'search_query': f"({cat_query})+AND+submittedDate:[{start_date}0000+TO+{end_date}2359]",
-        'start': 0,
-        'max_results': num_results,
-        'sortBy': 'submittedDate',
-        'sortOrder': 'descending'
-    }
-    url = f"{base_url}?{urllib.parse.urlencode(params)}"
+    cat_query = '%28' + '+OR+'.join([f"cat:{cat}" for cat in categories]) + '%29' # NEW FOR CHECKBOX IMPLEMENTATION
+    url = f"http://export.arxiv.org/api/query?search_query=cat:{cat_query}+AND+submittedDate:[{start_date}0000+TO+{end_date}2359]&start=0&max_results={num_results}&sortBy=submittedDate&sortOrder=descending"
     
     response = urllib.request.urlopen(url).read()
     root = etree.fromstring(response)
