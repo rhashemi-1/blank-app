@@ -108,7 +108,8 @@ with st.form("search_form"):
         author_limit = st.number_input("Author Limit per Paper", min_value=1, value=5)
         max_h_index = st.number_input("Maximum H-Index", min_value=1, value=25)
     
-    keywords = st.text_input("Optional: Keywords (use AND, OR operators, e.g., 'transformer AND attention' or 'GPT OR LLM)")
+    keywords = st.text_input("Optional: Keywords (use AND, OR operators, e.g., 'transformer AND attention' or 'GPT OR LLM')")
+    keyword_list = [k.strip() for k in keywords.split(',')] if keywords else []
     submit_button = st.form_submit_button("Search")
 
 # Helper function
@@ -186,7 +187,8 @@ def get_results(categories, start_date, end_date, num_results, author_limit, max
 
     # FILTER FOR KEYWORDS if there is a keyword input
     if keywords != "":
-        or_terms = keywords.upper().split(' OR ')
+        keywords_str = ' '.join(keywords).upper()
+        or_terms = keywords_str.split(' OR ')
         mask = pd.Series([False] * len(df))
         for or_term in or_terms:
             and_terms = or_term.split(' AND ')
