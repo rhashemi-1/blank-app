@@ -10,14 +10,14 @@ import xml.etree.ElementTree as etree
 
 st.markdown("""
     <style>
-    .stMultiSelect [data-baseweb="checkbox"] input[type="checkbox"] + div {
-        background-color: #a8c5e4 !important;  /* Light blue color */
-        border-color: #a8c5e4 !important;      /* Light blue border */
+    /* Checkbox color when unchecked */
+    .st-emotion-cache-1tzc8h1 div[data-baseweb="select"] div[role="listbox"] div[role="option"] span div[data-testid="baseButton-checkboxElement"] {
+        background-color: #a8c5e4 !important;
     }
     
-    .stMultiSelect [data-baseweb="checkbox"] input[type="checkbox"]:checked + div {
-        background-color: #4a90e2 !important;  /* Darker blue when checked */
-        border-color: #4a90e2 !important;      /* Darker blue border when checked */
+    /* Checkbox color when checked */
+    .st-emotion-cache-1tzc8h1 div[data-baseweb="select"] div[role="listbox"] div[role="option"][aria-selected="true"] span div[data-testid="baseButton-checkboxElement"] {
+        background-color: #4a90e2 !important;
     }
     </style>
 """, unsafe_allow_html=True)
