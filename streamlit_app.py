@@ -92,9 +92,10 @@ with st.form("search_form"):
             'stat.TH': 'Theory'
         }
 
-        selected_cats = st.multiselect("Select 1 or More [Research Categories](https://arxiv.org/category_taxonomy)", options=category_options.keys(), format_func=lambda x: f"{x} - {category_options[x]}")
-        if not selected_cats:
-            st.warning("Please select at least one category")
+        selected_cats = st.multiselect(
+            "Select 1 or More [Research Categories](https://arxiv.org/category_taxonomy)", 
+            options=category_options.keys(), 
+            format_func=lambda x: f"{x} - {category_options[x]}")
         
         # category_selection = st.selectbox("[ArXiv Category](https://arxiv.org/category_taxonomy)", options=category_options)
         # # Extract category code from selection (everything before the dash)
@@ -160,7 +161,7 @@ def get_author_info(author_name):
 
 # Get results:
 def get_results(categories, start_date, end_date, num_results, author_limit, max_h_index=25, keywords=[]):
-    cat_query = '%OR%'.join([f"cat:{cat}" for cat in categories]) # NEW FOR CHECKBOX IMPLEMENTATION
+    cat_query = '(' + ' OR '.join([f"cat:{cat}" for cat in categories]) + ')' # NEW FOR CHECKBOX IMPLEMENTATION
     url = f"http://export.arxiv.org/api/query?search_query=cat:{cat_query}+AND+submittedDate:[{start_date}0000+TO+{end_date}2359]&start=0&max_results={num_results}&sortBy=submittedDate&sortOrder=descending"
     response = urllib.request.urlopen(url).read()
 
