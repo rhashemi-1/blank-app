@@ -10,13 +10,11 @@ import xml.etree.ElementTree as etree
 
 st.markdown("""
     <style>
-    /* Change the multiselect checkbox color */
     .stMultiSelect [data-baseweb="checkbox"] input[type="checkbox"] + div {
         background-color: #a8c5e4 !important;  /* Light blue color */
         border-color: #a8c5e4 !important;      /* Light blue border */
     }
     
-    /* Change the color when checked */
     .stMultiSelect [data-baseweb="checkbox"] input[type="checkbox"]:checked + div {
         background-color: #4a90e2 !important;  /* Darker blue when checked */
         border-color: #4a90e2 !important;      /* Darker blue border when checked */
