@@ -108,7 +108,7 @@ with st.form("search_form"):
         author_limit = st.number_input("Author Limit per Paper", min_value=1, value=5)
         max_h_index = st.number_input("Maximum H-Index", min_value=1, value=25)
     
-    keywords = st.text_input("Keywords (comma-separated)")
+    keywords = st.text_input("Optional: Keywords (use AND, OR operators, e.g., 'transformer AND attention' or 'GPT OR LLM)")
     submit_button = st.form_submit_button("Search")
 
 # Helper function
@@ -159,7 +159,7 @@ def get_author_info(author_name):
     pass
 
 # Get results:
-def get_results(categories, start_date, end_date, num_results, author_limit, max_h_index=25, keywords=[]):
+def get_results(categories, start_date, end_date, num_results, author_limit, max_h_index=25, keywords=""):
     cat_query = '%28' + '+OR+'.join([f"cat:{cat}" for cat in categories]) + '%29' # NEW FOR CHECKBOX IMPLEMENTATION
     url = f"http://export.arxiv.org/api/query?search_query=cat:{cat_query}+AND+submittedDate:[{start_date}0000+TO+{end_date}2359]&start=0&max_results={num_results}&sortBy=submittedDate&sortOrder=descending"
     
@@ -185,10 +185,21 @@ def get_results(categories, start_date, end_date, num_results, author_limit, max
     df = pd.DataFrame(data)
 
     # FILTER FOR KEYWORDS if there is a keyword input
-    if keywords != []:
-        mask = df['summary'].str.contains(keywords[0], case=False, na=False)
-        for word in keywords[1:]:
-            mask = mask & df['summary'].str.contains(word, case=False, na=False)
+    if keywords != "":
+        or_terms = keywords.upper().split(' OR ')
+        mask = pd.Series([False] * len(df))
+        for or_term in or_terms:
+            and_terms = or_term.split(' AND ')
+            and_mask = pd.Series([True] * len(df))
+            for term in and_terms:
+                term = term.strip()
+                and_mask = and_mask & df['summary'].str.contains(term, case=False, na=False)
+            mask = mask | and_mask
+        
+        # mask = df['summary'].str.contains(keywords[0], case=False, na=False)
+        # for word in keywords[1:]:
+        #     mask = mask & df['summary'].str.contains(word, case=False, na=False)
+        
         df = df[mask].reset_index(drop=True)
 
 
