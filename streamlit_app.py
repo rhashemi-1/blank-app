@@ -86,40 +86,6 @@ with st.form("search_form"):
             "cs.SI - Social and Information Networks",
             "cs.SY - Systems and Control",
             
-            # Mathematics
-            "math.AG - Algebraic Geometry",
-            "math.AT - Algebraic Topology",
-            "math.AP - Analysis of PDEs",
-            "math.CT - Category Theory",
-            "math.CA - Classical Analysis and ODEs",
-            "math.CO - Combinatorics",
-            "math.AC - Commutative Algebra",
-            "math.CV - Complex Variables",
-            "math.DG - Differential Geometry",
-            "math.DS - Dynamical Systems",
-            "math.FA - Functional Analysis",
-            "math.GM - General Mathematics",
-            "math.GN - General Topology",
-            "math.GT - Geometric Topology",
-            "math.GR - Group Theory",
-            "math.HO - History and Overview",
-            "math.IT - Information Theory",
-            "math.KT - K-Theory and Homology",
-            "math.LO - Logic",
-            "math.MP - Mathematical Physics",
-            "math.MG - Metric Geometry",
-            "math.NT - Number Theory",
-            "math.NA - Numerical Analysis",
-            "math.OA - Operator Algebras",
-            "math.OC - Optimization and Control",
-            "math.PR - Probability",
-            "math.QA - Quantum Algebra",
-            "math.RT - Representation Theory",
-            "math.RA - Rings and Algebras",
-            "math.SP - Spectral Theory",
-            "math.ST - Statistics Theory",
-            "math.SG - Symplectic Geometry",
-            
             # Statistics
             "stat.AP - Applications",
             "stat.CO - Computation",
@@ -128,11 +94,23 @@ with st.form("search_form"):
             "stat.OT - Other Statistics",
             "stat.TH - Theory"
         ]
+
+        # NEW CATEGORY IMPLEMENTATION (CHECKBOXES??)
+        cols = st.columns(3)
+        selected_cats = []
+
+        for idx, (cat_code, cat_name) in enumerate(category_options.items()):
+            col_idx = idx % 3
+            with cols[col_idx]:
+                if st.checkbox(f"{cat_code} ({cat_name})", key=cat_code):
+                    selected_cats.append(cat_code)
         
-        category_selection = st.selectbox("[ArXiv Category](https://arxiv.org/category_taxonomy)", options=category_options)
+        if not selected_cats: 
+            st.warning("Please select at least one category") # Error if no categories are selected
         
-        # Extract category code from selection (everything before the dash)
-        category = category_selection.split(" - ")[0].strip()    
+        # category_selection = st.selectbox("[ArXiv Category](https://arxiv.org/category_taxonomy)", options=category_options)
+        # # Extract category code from selection (everything before the dash)
+        # category = category_selection.split(" - ")[0].strip()    
         
         start_date = st.date_input("Start Date")
         end_date = st.date_input("End Date")
@@ -193,8 +171,9 @@ def get_author_info(author_name):
     pass
 
 # Get results:
-def get_results(category, start_date, end_date, num_results, author_limit, max_h_index=25, keywords=[]):
-    url = f"http://export.arxiv.org/api/query?search_query=cat:{category}+AND+submittedDate:[{start_date}0000+TO+{end_date}2359]&start=0&max_results={num_results}&sortBy=submittedDate&sortOrder=descending"
+def get_results(categories, start_date, end_date, num_results, author_limit, max_h_index=25, keywords=[]):
+    cat_query = ' OR '.join([f"cat:{cat}" for cat in categories) # NEW FOR CHECKBOX IMPLEMENTATION
+    url = f"http://export.arxiv.org/api/query?search_query=cat:{cat_query}+AND+submittedDate:[{start_date}0000+TO+{end_date}2359]&start=0&max_results={num_results}&sortBy=submittedDate&sortOrder=descending"
     response = urllib.request.urlopen(url).read()
 
     root = etree.fromstring(response)
@@ -269,7 +248,7 @@ def get_results(category, start_date, end_date, num_results, author_limit, max_h
     pass
 
 # Handle form submission
-if submit_button:
+if submit_button and selected_cats:
     try:
         with st.spinner('Fetching results...'):
             # Format dates
@@ -278,7 +257,7 @@ if submit_button:
             
             # Process keywords
             keyword_list = [k.strip() for k in keywords.split(',')] if keywords else []
-            
+
             # Get results
             results = get_results(
                 category=category,
