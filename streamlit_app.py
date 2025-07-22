@@ -92,7 +92,7 @@ with st.form("search_form"):
             'stat.TH': 'Theory'
         }
 
-        selected_cats = st.multiselect("Select 1 or More [Research Categories](https://arxiv.org/category_taxonomy)", options=category_options.keys(), format_func=lambda x: f"{x} - "{category_options[x]}")
+        selected_cats = st.multiselect("Select 1 or More [Research Categories](https://arxiv.org/category_taxonomy)", options=category_options.keys(), format_func=lambda x: f"{x} - {category_options[x]}")
         if not selected_cats:
             st.warning("Please select at least one category")
         
