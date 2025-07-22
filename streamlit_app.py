@@ -104,7 +104,7 @@ with st.form("search_form"):
         end_date = st.date_input("End Date")
         
     with col2:
-        num_results = st.number_input("Number of Results", min_value=1, max_value=100, value=10)
+        num_results = st.number_input("Number of Papers Scanned (increases app runtime)", min_value=1, max_value=1000, value=100)
         author_limit = st.number_input("Author Limit per Paper", min_value=1, value=5)
         max_h_index = st.number_input("Maximum H-Index", min_value=1, value=25)
     
