@@ -122,7 +122,7 @@ def get_author_info(author_name):
         'limit': 5
     }
     try:
-        time.sleep(0.1)
+        time.sleep(0.5)
         response = requests.get(base_url, params=params)
         
         if response.status_code == 200:
