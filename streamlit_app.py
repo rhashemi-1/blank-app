@@ -9,7 +9,7 @@ import requests
 import xml.etree.ElementTree as etree
 
 # Heading
-st.title("Scholar Search")
+st.title("Roma's Sourcing Project")
 st.write("Streamlining the discovery of emerging research talent by analyzing recent publications and their authors")
 
 with st.expander("How It Works"):
