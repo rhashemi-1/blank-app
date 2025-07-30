@@ -160,6 +160,88 @@ def get_author_info(author_name):
         return None
     pass
 
+# Helper function for boolean searching
+def parse_boolean_search(text, df):
+    """
+    Parse complex boolean search with parentheses
+    Example: "(transformer AND attention) OR (GPT AND (LLM OR language))"
+    """
+    def evaluate_expression(expr):
+        # Remove outer parentheses if they exist
+        expr = expr.strip()
+        if expr.startswith('(') and expr.endswith(')'):
+            expr = expr[1:-1].strip()
+
+        # Split by OR first
+        or_terms = []
+        current_term = ""
+        paren_count = 0
+        
+        for char in expr + ' ':  # Add space to handle last term
+            if char == '(':
+                paren_count += 1
+            elif char == ')':
+                paren_count -= 1
+            
+            if char == 'O' and paren_count == 0 and expr[len(current_term)+1:].startswith('R '):
+                if current_term.strip():
+                    or_terms.append(current_term.strip())
+                current_term = ""
+                continue
+            elif char == 'R' and paren_count == 0 and current_term.endswith('O'):
+                current_term = current_term[:-1]  # Remove the 'O'
+                continue
+            
+            current_term += char
+        
+        if current_term.strip():
+            or_terms.append(current_term.strip())
+
+        # Process each OR term
+        masks = []
+        for or_term in or_terms:
+            # Split by AND
+            and_terms = []
+            current_term = ""
+            paren_count = 0
+            
+            for char in or_term + ' ':
+                if char == '(':
+                    paren_count += 1
+                elif char == ')':
+                    paren_count -= 1
+                
+                if char == 'A' and paren_count == 0 and or_term[len(current_term)+1:].startswith('ND '):
+                    if current_term.strip():
+                        and_terms.append(current_term.strip())
+                    current_term = ""
+                    continue
+                elif char == 'D' and paren_count == 0 and current_term.endswith('AN'):
+                    current_term = current_term[:-2]  # Remove the 'AN'
+                    continue
+                
+                current_term += char
+            
+            if current_term.strip():
+                and_terms.append(current_term.strip())
+
+            # Process AND terms
+            and_mask = pd.Series([True] * len(df))
+            for term in and_terms:
+                if '(' in term:  # Nested expression
+                    term_mask = evaluate_expression(term)
+                else:
+                    term = term.strip()
+                    term_mask = df['summary'].str.contains(term, case=False, na=False)
+                and_mask = and_mask & term_mask
+            
+            masks.append(and_mask)
+        
+        return pd.concat(masks, axis=1).any(axis=1) if masks else pd.Series([False] * len(df))
+
+    return evaluate_expression(text)
+
+
 # Get results:
 def get_results(categories, start_date, end_date, num_results, author_limit, min_h_index=1, max_h_index=25, keywords=""):
     cat_query = '%28' + '+OR+'.join([f"cat:{cat}" for cat in categories]) + '%29' # NEW FOR CHECKBOX IMPLEMENTATION
@@ -188,23 +270,8 @@ def get_results(categories, start_date, end_date, num_results, author_limit, min
 
     # FILTER FOR KEYWORDS if there is a keyword input
     if keywords != "":
-        keywords_str = ' '.join(keywords).upper()
-        or_terms = keywords_str.split(' OR ')
-        mask = pd.Series([False] * len(df))
-        for or_term in or_terms:
-            and_terms = or_term.split(' AND ')
-            and_mask = pd.Series([True] * len(df))
-            for term in and_terms:
-                term = term.strip()
-                and_mask = and_mask & df['summary'].str.contains(term, case=False, na=False)
-            mask = mask | and_mask
-        
-        # mask = df['summary'].str.contains(keywords[0], case=False, na=False)
-        # for word in keywords[1:]:
-        #     mask = mask & df['summary'].str.contains(word, case=False, na=False)
-        
+        mask = parse_boolean_search(keywords, df)
         df = df[mask].reset_index(drop=True)
-
 
     df = df.explode('authors')  # Make each row an author
     author_data = []
