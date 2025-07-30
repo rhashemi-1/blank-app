@@ -337,6 +337,8 @@ def get_results(categories, start_date, end_date, num_results, author_limit, min
 if submit_button and selected_cats:
     if end_date < start_date:
         st.error("Error: End date must be after start date")
+    if min_h_index > max_h_index:
+        st.error("Error: Minimum H-Index cannot be greater than Maximum H-Index")
         
     try:
         with st.spinner('Fetching results...'):
