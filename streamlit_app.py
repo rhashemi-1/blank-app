@@ -106,6 +106,7 @@ with st.form("search_form"):
     with col2:
         num_results = st.number_input("Number of Papers Scanned (increases app runtime)", min_value=1, max_value=1000, value=100)
         author_limit = st.number_input("Author Limit per Paper", min_value=1, value=5)
+        min_h_index = st.number_input("Minimum Author H-Index", min_value=1, value=1)
         max_h_index = st.number_input("Maximum Author H-Index", min_value=1, value=25)
     
     keywords = st.text_input("Optional: Keywords (use AND, OR operators, e.g., 'transformer AND attention' or 'GPT OR LLM')")
@@ -160,7 +161,7 @@ def get_author_info(author_name):
     pass
 
 # Get results:
-def get_results(categories, start_date, end_date, num_results, author_limit, max_h_index=25, keywords=""):
+def get_results(categories, start_date, end_date, num_results, author_limit, min_h_index=1, max_h_index=25, keywords=""):
     cat_query = '%28' + '+OR+'.join([f"cat:{cat}" for cat in categories]) + '%29' # NEW FOR CHECKBOX IMPLEMENTATION
     url = f"http://export.arxiv.org/api/query?search_query=cat:{cat_query}+AND+submittedDate:[{start_date}0000+TO+{end_date}2359]&start=0&max_results={num_results}&sortBy=submittedDate&sortOrder=descending"
     
@@ -226,8 +227,8 @@ def get_results(categories, start_date, end_date, num_results, author_limit, max
     merged_df = df.merge(author_df, on='authors')
     filtered_df = merged_df[(merged_df['paper_count'] >= 10) & (merged_df['citation_count'] >= 100)].reset_index(
         drop=True)  # Per Jayesh's recommendation, filter out authors without at least 10 publications and 100 citations
-    filtered_df_2 = filtered_df[filtered_df['h_index'] <= max_h_index].reset_index(
-        drop=True)  # Per Ben's recommendation, filter out authors with an h-index greater than 25. UPDATE: user customizes their max h index based on role looking to fill. Default is 25 if there is no input
+    filtered_df_2 = filtered_df[(filtered_df['h_index'] <= max_h_index) & (filtered_df['h_index'] >= min_h_index)].reset_index(
+        drop=True)  # user customizes their h index based on role looking to fill
     sorted_df = filtered_df_2.sort_values(by=['h_index', 'citation_count'], ascending=[False, False]).reset_index(
         drop=True)  # sorts by h_index first, then citation_count for ties
 
@@ -251,6 +252,9 @@ def get_results(categories, start_date, end_date, num_results, author_limit, max
 
 # Handle form submission
 if submit_button and selected_cats:
+    if end_date < start_date:
+        st.error("Error: End date must be after start date")
+        
     try:
         with st.spinner('Fetching results...'):
             # Format dates
@@ -267,6 +271,7 @@ if submit_button and selected_cats:
                 end_date=end_date_str,
                 num_results=num_results,
                 author_limit=author_limit,
+                min_h_index=min_h_index,
                 max_h_index=max_h_index,
                 keywords=keyword_list
             )
