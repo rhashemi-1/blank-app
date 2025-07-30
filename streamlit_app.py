@@ -114,17 +114,13 @@ with st.form("search_form"):
             min_h_index = st.number_input("Min H-Index", 
                                         min_value=1, 
                                         value=1,
-                                        key="min_h",
-                                        # Make the input box smaller
-                                        help="Minimum h-index to include")
+                                        key="min_h")
         
         with h_index_col2:
             max_h_index = st.number_input("Max H-Index", 
                                         min_value=1, 
                                         value=25,
-                                        key="max_h",
-                                        # Make the input box smaller
-                                        help="Maximum h-index to include")
+                                        key="max_h")
     
     keywords = st.text_input("Optional: Keywords (use AND, OR, () operators, e.g., '(transformer AND attention) OR (GPT AND (LLM OR language))')")
     keyword_list = [k.strip() for k in keywords.split(',')] if keywords else []
