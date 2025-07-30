@@ -243,7 +243,7 @@ def parse_boolean_search(text, df):
 
 
 # Get results:
-def get_results(categories, start_date, end_date, num_results, author_limit, min_h_index=1, max_h_index=25, keywords=""):
+def get_results(categories, start_date, end_date, num_results, author_limit, min_h_index=1, max_h_index=25, keywords=[]):
     cat_query = '%28' + '+OR+'.join([f"cat:{cat}" for cat in categories]) + '%29' # NEW FOR CHECKBOX IMPLEMENTATION
     url = f"http://export.arxiv.org/api/query?search_query=cat:{cat_query}+AND+submittedDate:[{start_date}0000+TO+{end_date}2359]&start=0&max_results={num_results}&sortBy=submittedDate&sortOrder=descending"
     
@@ -269,9 +269,12 @@ def get_results(categories, start_date, end_date, num_results, author_limit, min
     df = pd.DataFrame(data)
 
     # FILTER FOR KEYWORDS if there is a keyword input
-    if keywords != "":
-        mask = parse_boolean_search(keywords, df)
-        df = df[mask].reset_index(drop=True)
+    if keywords != []:
+        if isinstance(keywords, list):
+            keywords = ' '.join(keywords)
+        if keywords.strip():  # Only apply filter if there are actual keywords
+            mask = parse_boolean_search(keywords, df)
+            df = df[mask].reset_index(drop=True)
 
     df = df.explode('authors')  # Make each row an author
     author_data = []
@@ -327,9 +330,6 @@ if submit_button and selected_cats:
             # Format dates
             start_date_str = start_date.strftime("%Y%m%d")
             end_date_str = end_date.strftime("%Y%m%d")
-            
-            # Process keywords
-            keyword_list = [k.strip() for k in keywords.split(',')] if keywords else []
 
             # Get results
             results = get_results(
@@ -340,7 +340,7 @@ if submit_button and selected_cats:
                 author_limit=author_limit,
                 min_h_index=min_h_index,
                 max_h_index=max_h_index,
-                keywords=keyword_list
+                keywords=keywords
             )
             
             # Display results
