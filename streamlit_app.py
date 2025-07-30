@@ -109,7 +109,7 @@ with st.form("search_form"):
         min_h_index = st.number_input("Minimum Author H-Index", min_value=1, value=1)
         max_h_index = st.number_input("Maximum Author H-Index", min_value=1, value=25)
     
-    keywords = st.text_input("Optional: Keywords (use AND, OR operators, e.g., 'transformer AND attention' or 'GPT OR LLM')")
+    keywords = st.text_input("Optional: Keywords (use AND, OR, () operators, e.g., "(transformer AND attention) OR (GPT AND (LLM OR language))")
     keyword_list = [k.strip() for k in keywords.split(',')] if keywords else []
     submit_button = st.form_submit_button("Search")
 
